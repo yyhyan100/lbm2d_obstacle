@@ -25,6 +25,7 @@ integer i,j,k
 
 do i=1,ied
 do j=1,jed
+if (ph(i,j)>0) then
 	rho(i,j)=0.0
 	u(i,j)=0.0
 	v(i,j)=0.0
@@ -35,6 +36,7 @@ do j=1,jed
 	enddo
 	u(i,j)=u(i,j)/rho(i,j)
 	v(i,j)=v(i,j)/rho(i,j)
+endif
 enddo
 enddo
 i=1

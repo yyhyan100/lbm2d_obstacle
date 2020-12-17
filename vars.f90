@@ -1,13 +1,13 @@
 module vars
 integer,parameter:: Q=8
-real, parameter:: r0=1.0;
 integer ied,jed
 real dx,dt,tt,t_end
 real ei(0:Q,2)
 real, pointer:: f(:,:,:), feq(:,:,:), u(:,:), v(:,:), rho(:,:)
+integer, pointer:: ph(:,:)
 real, pointer:: x(:,:), y(:,:)
 real wi(0:Q),g(0:Q)
-real omg
+real omg,u0,rho_in,rho_out
 contains
 
 subroutine allocateField()
@@ -16,12 +16,13 @@ subroutine allocateField()
 	allocate(u(ied,jed))
 	allocate(v(ied,jed))
 	allocate(rho(ied,jed))
+	allocate(ph(ied,jed))	
 	allocate(x(ied,jed))
 	allocate(y(ied,jed))
 end subroutine
 
 subroutine deallocateField()
-	deallocate(f,feq,u,v,rho,x,y)
+	deallocate(f,feq,u,v,rho,ph,x,y)
 end subroutine
 end module
 

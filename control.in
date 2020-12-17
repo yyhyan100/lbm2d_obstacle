@@ -1,7 +1,9 @@
-400 100 0.01 0.01
+600 200 0.01 0.01
+0.4 1.0 0.8
 200.0 2000 100 1
-"channel_"
+"obstacle_"
 
 !	read(10,*) ied,jed,dx,dt
+!	read(10,*) u0,rho_in,rho_out
 !	read(10,*) t_end,kstep_save,kstep_view,file_format
 !	read(10,*) output_filename

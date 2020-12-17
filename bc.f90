@@ -33,8 +33,6 @@ end subroutine
 !----------------------------------------------------------------------------
 subroutine outlet_pressure() ! pressure boundary condition
 	use vars
-	real rho_out
-	rho_out=0.8
 	i=ied
 	do j=1,jed
 		u(i,j)=(f(0,i,j)+f(2,i,j)+f(4,i,j)+2.0*(f(1,i,j)+f(5,i,j)+f(8,i,j)))/rho_out-1.0
@@ -47,34 +45,54 @@ end subroutine
 subroutine bouncebk 
 	use vars
 	integer i,j,k
-! lower	
+	do i=2,ied-1
+	do j=2,jed-1
+		if(ph(i,j)==1) then
+			if(ph(i+1,j)==2) f(1,i,j)=f(3,i,j)
+			if(ph(i,j+1)==2) f(2,i,j)=f(4,i,j)
+			if(ph(i-1,j)==2) f(3,i,j)=f(1,i,j)
+			if(ph(i,j-1)==2) f(4,i,j)=f(2,i,j)
+			if(ph(i+1,j+1)==2) f(5,i,j)=f(7,i,j)
+			if(ph(i-1,j+1)==2) f(6,i,j)=f(8,i,j)
+			if(ph(i-1,j-1)==2) f(7,i,j)=f(5,i,j)
+			if(ph(i+1,j-1)==2) f(8,i,j)=f(6,i,j)
+		endif
+	enddo
+	enddo
 	j=1
-	do i=1,ied-1
-		f(2,i,j)=f(4,i,j)
-		f(5,i,j)=f(7,i,j)
-		f(6,i,j)=f(8,i,j)
+	do i=1,ied
+		if(ph(i,j)==1) then
+			if(ph(i,j+1)==2) f(2,i,j)=f(4,i,j)
+			if(ph(i+1,j+1)==2) f(5,i,j)=f(7,i,j)
+			if(ph(i-1,j+1)==2) f(6,i,j)=f(8,i,j)
+		endif
 	enddo
-! upper	
 	j=jed
-	do i=1,ied-1
-		f(4,i,j)=f(2,i,j)
-		f(7,i,j)=f(5,i,j)
-		f(8,i,j)=f(6,i,j)
+	do i=1,ied
+		if(ph(i,j)==1) then
+			if(ph(i,j-1)==2) f(4,i,j)=f(2,i,j)
+			if(ph(i-1,j-1)==2) f(7,i,j)=f(5,i,j)
+			if(ph(i+1,j-1)==2) f(8,i,j)=f(6,i,j)
+		endif
 	enddo
-! left	
-!	i=1
-!	do j=2,jed-1
-!		f(1,i,j)=f(3,i,j)
-!		f(5,i,j)=f(7,i,j)
-!		f(8,i,j)=f(6,i,j)
-!	enddo
-! right
-
-	
-! corner points, bounce back -- test
-!	i=1;j=1
-!	f(5,i,j)=f(7,i+1,j+1)
-!	i=ied;j=1
-!	f(6,i,j)=f(8,i-1,j+1)
-	
+	i=1
+	do j=1,jed
+		if(ph(i,j)==1) then
+			if(ph(i+1,j)==2) f(1,i,j)=f(3,i,j)
+			if(ph(i,j+1)==2) f(2,i,j)=f(4,i,j)
+			if(ph(i,j-1)==2) f(4,i,j)=f(2,i,j)
+			if(ph(i+1,j+1)==2) f(5,i,j)=f(7,i,j)
+			if(ph(i+1,j-1)==2) f(8,i,j)=f(6,i,j)
+		endif
+	enddo
+	i=ied
+	do j=1,jed
+		if(ph(i,j)==1) then
+			if(ph(i,j+1)==2) f(2,i,j)=f(4,i,j)
+			if(ph(i-1,j)==2) f(3,i,j)=f(1,i,j)
+			if(ph(i,j-1)==2) f(4,i,j)=f(2,i,j)
+			if(ph(i-1,j+1)==2) f(6,i,j)=f(8,i,j)
+			if(ph(i-1,j-1)==2) f(7,i,j)=f(5,i,j)
+		endif
+	enddo
 end subroutine
